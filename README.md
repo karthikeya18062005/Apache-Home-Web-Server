@@ -1,93 +1,63 @@
-Apache Web Server Setup Guide
+Apache Web Server - Local Network Hosting
 
-Introduction
+This project demonstrates setting up an Apache web server on Ubuntu Server to host multiple websites accessible within your local network.
 
-This guide explains how to set up an Apache web server on an Ubuntu Server for local network access. It also covers deploying multiple websites using Virtual Hosts and configuring essential settings.
+Project Overview
 
-Prerequisites
+This setup allows you to:
+✅ Host multiple websites on a single Apache server.✅ Access hosted sites using custom domain names like site1.local.✅ Easily expand and manage new websites with minimal configuration.
 
-Ubuntu Server installed
+Features
 
-Apache2 installed (sudo apt install apache2)
+Apache Web Server for reliable and secure hosting.
 
-Static IP address assigned to your server
+Virtual Hosts to manage multiple websites.
 
-Step 1: Directory Structure
+Firewall Configuration for safe access control.
 
-Create separate directories for each website inside /var/www/html/.
+Static IP Setup ensures your server IP remains constant.
 
-sudo mkdir /var/www/html/site1
-sudo mkdir /var/www/html/site2
+Tech Stack
 
-Add sample content to each site:
+OS: Ubuntu Server 24.04 LTS
 
-echo "<h1>Welcome to Site 1</h1>" | sudo tee /var/www/html/site1/index.html
-echo "<h1>Welcome to Site 2</h1>" | sudo tee /var/www/html/site2/index.html
+Web Server: Apache 2
 
-Step 2: Configure Virtual Hosts
+Languages: HTML, CSS, JavaScript
 
-Create separate configuration files for each site.
+Setup Instructions
 
-For Site 1
+Follow the detailed Setup Guide for step-by-step instructions on:
 
-sudo nano /etc/apache2/sites-available/site1.conf
+Creating website directories
 
-Add the following content:
+Configuring Virtual Hosts
 
-<VirtualHost *:80>
-    ServerAdmin admin@site1.local
-    DocumentRoot /var/www/html/site1
-    ServerName site1.local
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
+Enabling and testing the sites
 
-For Site 2
+Updating your /etc/hosts file for easy access
 
-sudo nano /etc/apache2/sites-available/site2.conf
+Managing Apache service and firewall rules
 
-Add the following content:
+How to Access the Websites
 
-<VirtualHost *:80>
-    ServerAdmin admin@site2.local
-    DocumentRoot /var/www/html/site2
-    ServerName site2.local
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
+Access Site 1 via: http://site1.local
 
-Step 3: Enable the Virtual Hosts
+Access Site 2 via: http://site2.local
 
-Run these commands:
+Ensure your devices are connected to the same network as the server for access.
 
-sudo a2ensite site1.conf
-sudo a2ensite site2.conf
-sudo systemctl reload apache2
+Future Enhancements
 
-Step 4: Update /etc/hosts (For Local Access)
+Add SSL certificates for secure HTTPS connections.
 
-Add these lines to your /etc/hosts file:
+Enable access via Cloudflare Tunnel for external access if needed.
 
-192.168.0.109 site1.local
-192.168.0.109 site2.local
+Screenshots
 
-Replace 192.168.0.109 with your server's static IP.
 
-Step 5: Firewall Configuration
 
-Ensure Apache is allowed in UFW:
+License
 
-sudo ufw allow 'Apache'
-sudo systemctl reload apache2
+This project is open-source and available under the MIT License.
 
-Step 6: Access the Websites
-
-For Site 1: http://site1.local
-
-For Site 2: http://site2.local
-
-Troubleshooting Tips
-
-✅ Ensure Apache service is running: sudo systemctl status apache2
-✅ Verify Apache is listening on port 80: sudo netstat -tuln | grep ':80'
-✅ Restart Apache after config changes: sudo systemctl restart apache2
